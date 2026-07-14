@@ -88,6 +88,64 @@ Typical requirements to run the notebook:
 - `README.md` — Project documentation
 
 ---
+## Tech Stack
+
+- Python
+- XGBoost, scikit-learn (Random Forest, SVM, Logistic Regression)
+- NumPy, Pandas
+- OpenCV / scikit-image (for HOG, LBP, FFT feature extraction)
+- Jupyter Notebook
+
+
+# DeepGuard ML — Model Training Pipeline
+
+Training pipeline for **DeepGuard AI**, an ensemble machine learning system that detects AI-generated / manipulated images. This repo covers dataset preparation, feature extraction, and model training — the trained models are consumed by the [DeepGuard AI web app](https://github.com/mustafa-asif/DeepGuard-AI-Detector).
+
+## Overview
+
+The pipeline trains and evaluates four ensemble classifiers to distinguish real images from AI-generated/forged ones, using classical feature extraction techniques rather than raw pixel input — keeping the models lightweight and interpretable.
+
+## Models Trained
+
+| Model               | Accuracy | F1-Score | Status  |
+| -------------------- | -------- | -------- | ------- |
+| XGBoost              | 94.5%    | 93.8%    | Primary |
+| Random Forest         | 91.2%    | 90.5%    | Active  |
+| SVM                   | 88.7%    | 87.9%    | Active  |
+| Logistic Regression   | 86.4%    | 85.1%    | Active  |
+
+## Feature Extraction
+
+Rather than feeding raw images into the models, three complementary feature extraction techniques are used to capture different forgery signatures:
+
+- **HOG (Histogram of Oriented Gradients)** — captures edge/structural anomalies
+- **LBP (Local Binary Patterns)** — analyzes texture micro-patterns to detect GAN artifacts
+- **FFT (Fast Fourier Transform)** — reveals frequency-domain irregularities and checkerboard artifacts common in generated images
+
+## Dataset
+
+- **Total size**: 140,000 images
+- **Real images**: 70,000
+- **AI-generated images**: 70,000
+- Split into train/validation/test sets
+
+## Pipeline
+
+1. **Data loading** — download and organize the labeled real/fake image dataset
+2. **Feature extraction** — compute HOG, LBP, and FFT features for each image
+3. **Model training** — train XGBoost, Random Forest, SVM, and Logistic Regression classifiers on the extracted features
+4. **Evaluation** — compare models on accuracy and F1-score
+5. **Export** — serialize trained models (`ensemble.pkl` and individual classifier files) for use in the DeepGuard AI web app
+
+
+
+
+
+## Related Repositories
+
+- [DeepGuard AI Detector](https://github.com/mustafa-asif/DeepGuard-AI-Detector) — the deployed web app that uses these trained models
+
+
 
 ## Notes
 
@@ -98,4 +156,4 @@ Typical requirements to run the notebook:
 
 ## Author
 
-- GitHub: https://github.com/mustafa-asif
+Mustafa Asif — [GitHub](https://github.com/mustafa-asif)
